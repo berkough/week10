@@ -13,7 +13,7 @@ class ComicBox {
 
 class Comic {
     constructor(id,name,issue,year,pub){
-        this.id = id; this.name = name; this.issue = issue; this.year = year; this.publisher = pub;
+        this.id = id; this.name = name; this.issue = issue; this.year = year; this.pub = pub;
     }
 }
 
@@ -35,7 +35,8 @@ function getValue(element){
 onClick('new-comic-box',()=>{
     comicBoxes.push(new ComicBox(comicBoxId++,getValue('new-comic-box-label')));
     console.log(comicBoxes);
-    drawDOM();   
+    drawDOM();
+    document.getElementById('new-comic-box-label').value = '';
  });
 
 function drawDOM(){
@@ -51,13 +52,13 @@ function drawDOM(){
         comicDiv.appendChild(title);
         comicDiv.appendChild(table);
         for(let j = 0; j < comicBoxes[i].contents.length; j++){
-            createComicRow(comicBoxes[i].label, table, comicBoxes[i].contents[j].comic);
+            createComicRow(comicBoxes[i], table, comicBoxes[i].contents[j]);
         }
     }
 }
 
 function createComicRow(comicBox, table, comic){
-    let row = table.insertRow(0);
+    let row = table.insertRow(-1);
     row.insertCell(0).innerHTML = comic.name;
     row.insertCell(1).innerHTML = comic.issue;
     row.insertCell(2).innerHTML = comic.year;
@@ -82,7 +83,7 @@ function deleteComicBoxButton(comicBox){
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Delete';
     btn.onclick = ()=>{
-        let index = comicBoxes.indexOf(comicBox);
+        let index = comicBox.indexOf(comicBox);
         comicBoxes.splice(index, 1);
         drawDOM();
     };
@@ -94,13 +95,17 @@ function createNewComicButton(comicBox){
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Create';
     btn.onclick = ()=>{
-        comicBox.push(new Comic(comicId++,getValue(`name-input-${comicBox.id}`),getValue(`issue-input-${comicBox.id}`),getValue(`year-input-${comicBox.id}`),getValue(`pub-input-${comicBox.id}`)));
+        comicBox.contents.push(new Comic(comicId++,getValue(`name-input-${comicBox.contents.id}`),
+            getValue(`issue-input-${comicBox.contents.id}`),
+            getValue(`year-input-${comicBox.contents.id}`),
+            getValue(`pub-input-${comicBox.contents.id}`)));
         drawDOM();
     }
     return btn;
 }
 
 function createComicBoxTable(comicBox){
+    console.log(comicBox.contents);
     let table = document.createElement('table');
     table.setAttribute('class','table table-dark');
     let row = table.insertRow(0);
@@ -123,22 +128,22 @@ function createComicBoxTable(comicBox){
     let pubTh = document.createElement('th');
     let createTh = document.createElement('th');
     let nameInput = document.createElement('input');
-    nameInput.setAttribute('id',`name-input-${comicBox.id}`);
+    nameInput.setAttribute('id',`name-input-${comicBox.contents.id}`);
     nameInput.setAttribute('type','text');
     nameInput.setAttribute('class','form-control');
     let issueInput = document.createElement('input');
-    issueInput.setAttribute('id',`issue-input-${comicBox.id}`);
+    issueInput.setAttribute('id',`issue-input-${comicBox.contents.id}`);
     issueInput.setAttribute('type','text');
     issueInput.setAttribute('class','form-control');
     let yearInput = document.createElement('input');
-    yearInput.setAttribute('id',`year-input-${comicBox.id}`);
+    yearInput.setAttribute('id',`year-input-${comicBox.contents.id}`);
     yearInput.setAttribute('type','text');
     yearInput.setAttribute('class','form-control');
     let pubInput = document.createElement('input');
-    pubInput.setAttribute('id',`pub-input-${comicBox.id}`);
+    pubInput.setAttribute('id',`pub-input-${comicBox.contents.id}`);
     pubInput.setAttribute('type','text');
     pubInput.setAttribute('class','form-control');
-    let newComicButton = createNewComicButton(comicBox.contents);
+    let newComicButton = createNewComicButton(comicBox);
     nameTh.appendChild(nameInput);
     issueTh.appendChild(issueInput);
     yearTh.appendChild(yearInput);
