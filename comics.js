@@ -1,4 +1,3 @@
-//ComicBox class is a class of object that contains the necessary 
 class ComicBox {
     constructor(id,label){
         this.id = id; this.label = label; this.contents = [];
