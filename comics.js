@@ -1,3 +1,4 @@
+//ComicBox class is a class of object that contains the necessary 
 class ComicBox {
     constructor(id,label){
         this.id = id; this.label = label; this.contents = [];
@@ -18,7 +19,6 @@ class Comic {
 }
 
 let comicBoxes = [];
-console.log(comicBoxes[0]);
 let comicBoxId = 0;
 let comicId = 0;
 
@@ -46,13 +46,16 @@ function drawDOM(){
         console.log(comicBoxes[i].label);
         console.log(comicBoxes[i].id);
         let table = createComicBoxTable(comicBoxes[i]);
+        console.log(comicBoxes[i].contents);
         let title = document.createElement('h2');
-        title.innerHTML = comicBoxes[i].label;
+        title.innerHTML = comicBoxes[i].label+' ';
         title.appendChild(deleteComicBoxButton(comicBoxes[i].label));
+        console.log(comicBoxes.indexOf(comicBoxes[i].label)+1);
         comicDiv.appendChild(title);
         comicDiv.appendChild(table);
         for(let j = 0; j < comicBoxes[i].contents.length; j++){
             createComicRow(comicBoxes[i], table, comicBoxes[i].contents[j]);
+            console.log(comicBoxes[i].contents[j]);
         }
     }
 }
@@ -71,7 +74,7 @@ function deleteComicButton(comicBox, comic){
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Delete';
     btn.onclick = ()=>{
-        let index = comicBox.contents.indexOf(comic);
+        let index = comicBox.contents.indexOf(comic)+1;
         comicBox.contents.splice(index, 1);
         drawDOM();
     };
@@ -82,8 +85,9 @@ function deleteComicBoxButton(comicBox){
     let btn = document.createElement('button');
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Delete';
+    console.log(comicBox);
     btn.onclick = ()=>{
-        let index = comicBox.indexOf(comicBox);
+        let index = comicBoxes.indexOf(comicBox)+1;
         comicBoxes.splice(index, 1);
         drawDOM();
     };
@@ -95,17 +99,16 @@ function createNewComicButton(comicBox){
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Create';
     btn.onclick = ()=>{
-        comicBox.contents.push(new Comic(comicId++,getValue(`name-input-${comicBox.contents.id}`),
-            getValue(`issue-input-${comicBox.contents.id}`),
-            getValue(`year-input-${comicBox.contents.id}`),
-            getValue(`pub-input-${comicBox.contents.id}`)));
+        comicBox.contents.push(new Comic(comicId++,getValue(`name-input-${comicBox.id}`),
+            getValue(`issue-input-${comicBox.id}`),
+            getValue(`year-input-${comicBox.id}`),
+            getValue(`pub-input-${comicBox.id}`)));
         drawDOM();
     }
     return btn;
 }
 
 function createComicBoxTable(comicBox){
-    console.log(comicBox.contents);
     let table = document.createElement('table');
     table.setAttribute('class','table table-dark');
     let row = table.insertRow(0);
@@ -128,19 +131,19 @@ function createComicBoxTable(comicBox){
     let pubTh = document.createElement('th');
     let createTh = document.createElement('th');
     let nameInput = document.createElement('input');
-    nameInput.setAttribute('id',`name-input-${comicBox.contents.id}`);
+    nameInput.setAttribute('id',`name-input-${comicBox.id}`);
     nameInput.setAttribute('type','text');
     nameInput.setAttribute('class','form-control');
     let issueInput = document.createElement('input');
-    issueInput.setAttribute('id',`issue-input-${comicBox.contents.id}`);
+    issueInput.setAttribute('id',`issue-input-${comicBox.id}`);
     issueInput.setAttribute('type','text');
     issueInput.setAttribute('class','form-control');
     let yearInput = document.createElement('input');
-    yearInput.setAttribute('id',`year-input-${comicBox.contents.id}`);
+    yearInput.setAttribute('id',`year-input-${comicBox.id}`);
     yearInput.setAttribute('type','text');
     yearInput.setAttribute('class','form-control');
     let pubInput = document.createElement('input');
-    pubInput.setAttribute('id',`pub-input-${comicBox.contents.id}`);
+    pubInput.setAttribute('id',`pub-input-${comicBox.id}`);
     pubInput.setAttribute('type','text');
     pubInput.setAttribute('class','form-control');
     let newComicButton = createNewComicButton(comicBox);
