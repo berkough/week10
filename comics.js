@@ -50,7 +50,7 @@ function drawDOM(){
         let title = document.createElement('h2');
         title.innerHTML = comicBoxes[i].label+' ';
         title.appendChild(deleteComicBoxButton(comicBoxes[i].label));
-        console.log(comicBoxes.indexOf(comicBoxes[i].label)+1);
+        console.log(comicBoxes.indexOf(comicBoxes[i].label));
         comicDiv.appendChild(title);
         comicDiv.appendChild(table);
         for(let j = 0; j < comicBoxes[i].contents.length; j++){
